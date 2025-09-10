@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTimeTable - AI-Powered Task Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="app-title">SmartTimeTable</h1>
+                <div class="date-time">
+                    <span id="current-date-time"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-view="today">Today</button>
+                <button class="nav-tab" data-view="weekly">Weekly</button>
+                <button class="nav-tab" data-view="goals">Goals</button>
+                <button class="nav-tab" data-view="ai-suggestions">AI Suggestions</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Today View -->
+            <section id="today-view" class="view active">
+                <div class="view-header">
+                    <h2>Today's Tasks</h2>
+                    <div class="progress-overview">
+                        <span class="progress-text">Daily Progress: <span id="daily-progress">0%</span></span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="daily-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-add">
+                    <button class="btn btn--primary" id="add-task-btn">+ Add New Task</button>
+                </div>
+
+                <div class="tasks-container">
+                    <div id="today-tasks" class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Weekly View -->
+            <section id="weekly-view" class="view">
+                <div class="view-header">
+                    <h2>Weekly Overview</h2>
+                    <div class="week-navigation">
+                        <button class="btn btn--secondary" id="prev-week">← Previous Week</button>
+                        <span id="week-display">Week of September 8-14, 2025</span>
+                        <button class="btn btn--secondary" id="next-week">Next Week →</button>
+                    </div>
+                </div>
+                
+                <div class="weekly-grid" id="weekly-grid">
+                    <!-- Weekly calendar will be generated here -->
+                </div>
+            </section>
+
+            <!-- Goals View -->
+            <section id="goals-view" class="view">
+                <div class="view-header">
+                    <h2>Your Goals</h2>
+                    <button class="btn btn--primary" id="add-goal-btn">+ Add New Goal</button>
+                </div>
+                
+                <div class="goals-container">
+                    <div id="goals-list" class="goals-list"></div>
+                </div>
+            </section>
+
+            <!-- AI Suggestions View -->
+            <section id="ai-suggestions-view" class="view">
+                <div class="view-header">
+                    <h2>AI Productivity Tips</h2>
+                    <p class="view-subtitle">Smart suggestions to boost your productivity</p>
+                </div>
+                
+                <div class="suggestions-container">
+                    <div id="productivity-tips" class="tips-grid"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Task</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <form id="task-form" class="modal-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title *</label>
+                    <input type="text" id="task-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-category">Category</label>
+                        <select id="task-category" name="category">
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Health">Health</option>
+                            <option value="Learning">Learning</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-time">Estimated Time</label>
+                        <input type="text" id="task-time" name="estimatedTime" placeholder="e.g., 30 minutes">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-date">Date</label>
+                        <input type="date" id="task-date" name="date">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn--secondary" id="cancel-task">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Task</button>
+                </div>
+            </form>
+            
+            <!-- AI Suggestions Section -->
+            <div id="ai-suggestions-section" class="ai-suggestions-section">
+                <h4>💡 AI Suggestions for This Task</h4>
+                <div id="task-ai-suggestions" class="suggestion-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div id="goal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Goal</h3>
+                <button class="modal-close" id="close-goal-modal">&times;</button>
+            </div>
+            <form id="goal-form" class="modal-form">
+                <div class="form-group">
+                    <label for="goal-title">Goal Title *</label>
+                    <input type="text" id="goal-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-description">Description</label>
+                    <textarea id="goal-description" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-target-date">Target Date</label>
+                    <input type="date" id="goal-target-date" name="targetDate">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn--secondary" id="cancel-goal">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
